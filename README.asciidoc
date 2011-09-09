@@ -1,0 +1,96 @@
+// build:
+// asciidoc README.asciidoc 
+
+Munin plugins collection
+========================
+:author:    Federico Ramallo
+:data-uri:
+:icons:
+:pygments:
+
+Introduction
+------------
+
+This is my collection of munin plugins that I use to monitor production servers.
+This servers include the following services:
+- Nginx 
+- Multiple virtual hosts
+- Rails applications
+- Static web sites
+- Git repositories
+
+Requirements
+------------
+
+- awk
+- ps -oe support
+
+Install
+-------
+
+This guide will allow you to install the plugins on ubuntu 10.04 LTS.
+However, It may work on other debian / ubuntu distribution 
+
+In order to install this scripts you need to enable the plugins on each munin-node.
+
+  # Set up nginx plugins
+  cp nginx_* /usr/share/munin/plugins
+  for file in `ls /usr/share/munin/plugins/nginx_*`
+    do
+    ln -s $file /etc/munin/plugins
+  done
+
+  # Set up users plugins
+  cp byuser_* /usr/share/munin/plugins
+  for file in `ls /usr/share/munin/plugins/byuser_*`
+    do
+    ln -s $file /etc/munin/plugins
+  done
+
+Now you need to set up the plugins by setting the users you want to monitor.
+Edit the file /etc/munin/plugin-conf.d/munin-node
+
+  [byuser_cpu]
+  env.USERS "user_app1 user_app2"
+
+  [byuser_mem]
+  env.USERS "user_app1 user_app2"
+
+Now you need to restart munin-node
+
+  service munin-node restart
+
+Later check on your munin server.
+
+
+Supported plugins
+-----------------
+
+We recommend the following plugins:
+
+- postgres_*
+
+To install this plugins run:
+
+  # Set up postgres_* plugins
+  for file in `ls /usr/share/munin/plugins/postgres_*`
+    do
+    ln -s $file /etc/munin/plugins
+  done
+
+
+Extra plugins
+-------------
+
+Notice that ubuntu 10.04 includes extra plugins that you can install
+
+  aptitude install munin-plugins-extra
+
+
+
+Resources
+---------
+
+- https://github.com/perusio/nginx-munin[nginx munin original script]
+- 
+
